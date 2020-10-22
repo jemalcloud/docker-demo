@@ -6,8 +6,8 @@ node {
      commit_id = readFile('.git/commit-id').trim()
    }
    stage('test') {
+    environment { HOME="." }
      def myTestContainer = docker.image('node:4.6')
-     environment { HOME="." }
      myTestContainer.pull()
      myTestContainer.inside {
        sh 'npm install --only=dev'
@@ -15,6 +15,7 @@ node {
      }
    }
    stage('test with a DB') {
+     environment { HOME="." }
      def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes") 
      def myTestContainer = docker.image('node:4.6')
      myTestContainer.pull()
